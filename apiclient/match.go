@@ -315,6 +315,46 @@ func timeToUnixMilliseconds(t time.Time) int64 {
 	return t.UnixNano() / int64(time.Millisecond/time.Nanosecond)
 }
 
+func (c *client) GetMatchIds(ctx context.Context, r region.Region, PUUID string, opts *GetMatchlistOptions) ([]string, error) {
+	var (
+		res  []string
+		vals url.Values
+	)
+
+	if opts != nil {
+		vals = url.Values(make(map[string][]string))
+		if len(opts.Queue) != 0 {
+			for _, v := range opts.Queue {
+				vals.Add("queue", fmt.Sprintf("%d", v))
+			}
+		}
+		if len(opts.Season) != 0 {
+			for _, v := range opts.Season {
+				vals.Add("season", fmt.Sprintf("%d", v))
+			}
+		}
+		if len(opts.Champion) != 0 {
+			for _, v := range opts.Champion {
+				vals.Add("champion", fmt.Sprintf("%d", v))
+			}
+		}
+		if opts.BeginTime != nil {
+			vals.Add("beginTime", fmt.Sprintf("%d", timeToUnixMilliseconds(*opts.BeginTime)))
+		}
+		if opts.EndTime != nil {
+			vals.Add("endTime", fmt.Sprintf("%d", timeToUnixMilliseconds(*opts.EndTime)))
+		}
+		if opts.BeginIndex != nil {
+			vals.Add("beginIndex", fmt.Sprintf("%d", *opts.BeginIndex))
+		}
+		if opts.EndIndex != nil {
+			vals.Add("endIndex", fmt.Sprintf("%d", *opts.EndIndex))
+		}
+	}
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v5/matches/by-puuid", fmt.Sprintf("/%s/ids", PUUID), vals, &res)
+	return res, err
+}
+
 func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID string, opts *GetMatchlistOptions) (*Matchlist, error) {
 	var (
 		res  Matchlist

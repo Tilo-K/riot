@@ -72,7 +72,12 @@ type Client interface {
 
 	// GetMatchlist returns a matchlist for games played on a given account ID
 	// and filtered using given filter parameters, if any.
+	// Deprecated: This uses the Match V4 api, which isn't active anymore
 	GetMatchlist(ctx context.Context, r region.Region, accountID string, opts *GetMatchlistOptions) (*Matchlist, error)
+
+	// GetMatchIds returns a ist of matchIds for games played on a account with the given PUUID
+	// and filtered using given filter parameters, if any.
+	GetMatchIds(ctx context.Context, r region.Region, PUUID string, opts *GetMatchlistOptions) ([]string, error)
 
 	// GetRecentMatchlist returns the last 20 matches played on the given account ID.
 	GetRecentMatchlist(ctx context.Context, r region.Region, accountID string) (*Matchlist, error)
