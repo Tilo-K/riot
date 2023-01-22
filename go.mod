@@ -1,4 +1,4 @@
-module github.com/yuhanfang/riot
+module github.com/Tilo-K/riot
 
 require (
 	cloud.google.com/go v0.34.0
