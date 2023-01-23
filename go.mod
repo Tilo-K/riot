@@ -1,4 +1,4 @@
-module github.com/Tilo-K/riot
+module riot
 
 require (
 	cloud.google.com/go v0.34.0

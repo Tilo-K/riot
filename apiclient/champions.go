@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/yuhanfang/riot/constants/champion"
-	"github.com/yuhanfang/riot/constants/region"
+	"riot/constants/champion"
+	"riot/constants/region"
 )
 
 type ChampionList struct {
