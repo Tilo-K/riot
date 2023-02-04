@@ -10,11 +10,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/yuhanfang/riot/apiclient"
-	"github.com/yuhanfang/riot/constants/champion"
-	"github.com/yuhanfang/riot/constants/queue"
-	"github.com/yuhanfang/riot/constants/region"
-	"github.com/yuhanfang/riot/constants/season"
+	"github.com/Tilo-K/riot/apiclient"
+	"github.com/Tilo-K/riot/constants/champion"
+	"github.com/Tilo-K/riot/constants/queue"
+	"github.com/Tilo-K/riot/constants/region"
+	"github.com/Tilo-K/riot/constants/season"
 )
 
 var zeroTime time.Time

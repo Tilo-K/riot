@@ -7,7 +7,6 @@ require (
 	cloud.google.com/go/datastore v1.10.0
 	github.com/gorilla/mux v1.8.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
-	github.com/Tilo-K/riot v0.0.0-20191205014607-43dd1994728e
 )
 
 require (

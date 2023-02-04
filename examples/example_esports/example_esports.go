@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/yuhanfang/riot/esports"
-	"github.com/yuhanfang/riot/esports/league"
+	"github.com/Tilo-K/riot/esports"
+	"github.com/Tilo-K/riot/esports/league"
 )
 
 func prettyPrint(res interface{}, err error) {

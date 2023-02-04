@@ -11,11 +11,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/yuhanfang/riot/apiclient"
-	"github.com/yuhanfang/riot/constants/champion"
-	"github.com/yuhanfang/riot/constants/queue"
-	"github.com/yuhanfang/riot/constants/region"
-	"github.com/yuhanfang/riot/ratelimit"
+	"github.com/Tilo-K/riot/apiclient"
+	"github.com/Tilo-K/riot/constants/champion"
+	"github.com/Tilo-K/riot/constants/queue"
+	"github.com/Tilo-K/riot/constants/region"
+	"github.com/Tilo-K/riot/ratelimit"
 )
 
 const (

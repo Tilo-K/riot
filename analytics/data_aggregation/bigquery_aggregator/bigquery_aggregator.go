@@ -12,9 +12,9 @@ import (
 
 	"cloud.google.com/go/bigquery"
 	"cloud.google.com/go/datastore"
-	"github.com/nu7hatch/gouuid"
-	"github.com/yuhanfang/riot/analytics/data_aggregation"
-	"github.com/yuhanfang/riot/constants/region"
+	"github.com/Tilo-K/riot/analytics/data_aggregation"
+	"github.com/Tilo-K/riot/constants/region"
+	uuid "github.com/nu7hatch/gouuid"
 )
 
 // Aggregator aggregates data into a BigQuery table. It is illegal to construct

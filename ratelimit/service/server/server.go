@@ -1,30 +1,30 @@
 // Package server defines a rate limit server. The server has the following
 // HTTP methods:
 //
-//     POST /acquire/:API_KEY/:REGION
-//     	 Returns a unique string token that can be used to finalize or cancel
-//     	 the quota request. If this method returns HTTP OK, then the token must
-//     	 be marked either done or cancelled within one minute, or it is
-//     	 considered timed out. The method supports the following form fields:
+//	POST /acquire/:API_KEY/:REGION
+//		 Returns a unique string token that can be used to finalize or cancel
+//		 the quota request. If this method returns HTTP OK, then the token must
+//		 be marked either done or cancelled within one minute, or it is
+//		 considered timed out. The method supports the following form fields:
 //
-//         method: relative HTTP path to the Riot method. If omitted, then
-//         	 the request refers to the application-level quota.
-//         uniquifier: token that, if provided, signifies a distinct quota bucket,
-//           even if the method is the same.
-//         noappquota: if set to T or t, indicates that the request should count
-//           towards (possibly uniquified) method-level quota, but not application
-//           quota.
+//	    method: relative HTTP path to the Riot method. If omitted, then
+//	    	 the request refers to the application-level quota.
+//	    uniquifier: token that, if provided, signifies a distinct quota bucket,
+//	      even if the method is the same.
+//	    noappquota: if set to T or t, indicates that the request should count
+//	      towards (possibly uniquified) method-level quota, but not application
+//	      quota.
 //
-//     POST /done/:TOKEN
-//       Marks the request with the given token as complete, so that all
-//       relevant quota can be returned after a delay. This request may
-//       optionally include HTTP headers returned by the Riot API. If
-//       available, the server will parse the headers and update internally
-//       tracked quota availability.
+//	POST /done/:TOKEN
+//	  Marks the request with the given token as complete, so that all
+//	  relevant quota can be returned after a delay. This request may
+//	  optionally include HTTP headers returned by the Riot API. If
+//	  available, the server will parse the headers and update internally
+//	  tracked quota availability.
 //
-//     POST /cancel/:TOKEN
-//     	 Marks the request with the given token as cancelled, so that all
-//     	 relevant quota can be returned immediately.
+//	POST /cancel/:TOKEN
+//		 Marks the request with the given token as cancelled, so that all
+//		 relevant quota can be returned immediately.
 package server
 
 import (
@@ -34,9 +34,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Tilo-K/riot/ratelimit"
 	"github.com/gorilla/mux"
-	"github.com/nu7hatch/gouuid"
-	"github.com/yuhanfang/riot/ratelimit"
+	uuid "github.com/nu7hatch/gouuid"
 )
 
 const timeout = time.Minute
@@ -163,8 +163,9 @@ func (s *server) HandleCancel(w http.ResponseWriter, r *http.Request) {
 
 // New returns an HTTP handler that implements the rate limit service. The
 // return value can be used via code like:
-// 		r := New()
-//    http.Handle("/", r)
+//
+//			r := New()
+//	   http.Handle("/", r)
 func New() http.Handler {
 	s := server{
 		tokens:  make(map[string]*callbacksForToken),

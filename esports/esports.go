@@ -12,7 +12,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/yuhanfang/riot/external"
+	"github.com/Tilo-K/riot/external"
 )
 
 type Client struct {

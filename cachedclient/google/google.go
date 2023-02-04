@@ -10,7 +10,7 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/yuhanfang/riot/cachedclient"
+	"github.com/Tilo-K/riot/cachedclient"
 
 	"cloud.google.com/go/datastore"
 )

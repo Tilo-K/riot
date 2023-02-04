@@ -10,8 +10,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/yuhanfang/riot/external"
-	"github.com/yuhanfang/riot/ratelimit"
+	"github.com/Tilo-K/riot/external"
+	"github.com/Tilo-K/riot/ratelimit"
 )
 
 // client implemnts the ratelimit.Limiter interface by querying a rate limit

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/yuhanfang/riot/constants/language"
-	"github.com/yuhanfang/riot/staticdata"
+	"github.com/Tilo-K/riot/constants/language"
+	"github.com/Tilo-K/riot/staticdata"
 )
 
 func prettyPrint(res interface{}, err error) {
