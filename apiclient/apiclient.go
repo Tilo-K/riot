@@ -14,11 +14,12 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/yuhanfang/riot/constants/champion"
-	"github.com/yuhanfang/riot/constants/queue"
-	"github.com/yuhanfang/riot/constants/region"
-	"github.com/yuhanfang/riot/external"
-	"github.com/yuhanfang/riot/ratelimit"
+	"riot/constants/champion"
+	"riot/constants/queue"
+	"riot/constants/region"
+	"riot/constants/v5region"
+	"riot/external"
+	"riot/ratelimit"
 )
 
 // Client accesses the Riot API. Use New() to retrieve a valid instance.
@@ -66,13 +67,18 @@ type Client interface {
 	// ----- Match API -----
 
 	// GetMatch returns a match by match ID.
-	GetMatch(ctx context.Context, r region.Region, matchID int64) (*Match, error)
+	GetMatch(ctx context.Context, r v5region.V5Region, matchID string) (*Match, error)
 
 	GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*MatchTimeline, error)
 
 	// GetMatchlist returns a matchlist for games played on a given account ID
 	// and filtered using given filter parameters, if any.
+	// Deprecated: This uses the Match V4 api, which isn't active anymore
 	GetMatchlist(ctx context.Context, r region.Region, accountID string, opts *GetMatchlistOptions) (*Matchlist, error)
+
+	// GetMatchIds returns a ist of matchIds for games played on a account with the given PUUID
+	// and filtered using given filter parameters, if any.
+	GetMatchIds(ctx context.Context, r v5region.V5Region, PUUID string, opts *GetMatchlistOptions) ([]string, error)
 
 	// GetRecentMatchlist returns the last 20 matches played on the given account ID.
 	GetRecentMatchlist(ctx context.Context, r region.Region, accountID string) (*Matchlist, error)
@@ -153,6 +159,32 @@ func (c *client) dispatchAndUnmarshalWithUniquifier(ctx context.Context, r regio
 	return res, err
 }
 
+func (c *client) dispatchAndUnmarshalWithUniquifierV5(ctx context.Context, r v5region.V5Region, m string, relativePath string, v url.Values, u string, dest interface{}) (*http.Response, error) {
+	res, err := c.dispatchMethodV5(ctx, r, m, relativePath, v, u)
+	if err != nil {
+		return res, err
+	}
+	if res.StatusCode != http.StatusOK {
+		err, ok := httpErrors[res.StatusCode]
+		if !ok {
+			err = ErrBadHTTPStatus
+		}
+		return res, err
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	res.Body.Close()
+	res.Body = ioutil.NopCloser(bytes.NewReader(b))
+
+	// The body is in good state, so now we can return if there was an IO problem.
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(b, dest)
+
+	return res, err
+}
+
 // dispatchAndUnmarshal dispatches the method (see dispatchMethod). If the
 // method returns HTTP okay, then read the body into a buffer and attempt to
 // unmarshal it into the supplied destination. Otherwise, the method returns
@@ -163,11 +195,52 @@ func (c *client) dispatchAndUnmarshal(ctx context.Context, r region.Region, m st
 	return c.dispatchAndUnmarshalWithUniquifier(ctx, r, m, relativePath, v, "", dest)
 }
 
+func (c *client) dispatchAndUnmarshalV5(ctx context.Context, r v5region.V5Region, m string, relativePath string, v url.Values, dest interface{}) (*http.Response, error) {
+	return c.dispatchAndUnmarshalWithUniquifierV5(ctx, r, m, relativePath, v, "", dest)
+}
+
 // dispatchMethod calls the given API method for the given region. The
 // relativePath is appended to the method to form the REST endpoint. The given
 // URL values are encoded and passed as URL parameters following the REST
 // endpoint.
 func (c *client) dispatchMethod(ctx context.Context, r region.Region, m string, relativePath string, v url.Values, uniquifier string) (*http.Response, error) {
+	var suffix, separator string
+
+	if len(v) > 0 {
+		suffix = fmt.Sprintf("?%s", v.Encode())
+	}
+	if !strings.HasPrefix(relativePath, "/") {
+		separator = "/"
+	}
+	path := r.Host() + m + separator + relativePath + suffix
+	req, err := http.NewRequest("GET", path, nil)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	req.Header.Add("X-Riot-Token", c.key)
+
+	done, _, err := c.r.Acquire(ctx, ratelimit.Invocation{
+		ApplicationKey: c.key,
+		Region:         strings.ToUpper(string(r)),
+		Method:         strings.ToLower(m),
+		Uniquifier:     uniquifier,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	// If either the done() or the HTTP request is an error, then return error.
+	res, err := c.c.Do(req)
+	derr := done(res)
+	if err == nil {
+		err = derr
+	}
+	return res, err
+}
+
+func (c *client) dispatchMethodV5(ctx context.Context, r v5region.V5Region, m string, relativePath string, v url.Values, uniquifier string) (*http.Response, error) {
 	var suffix, separator string
 
 	if len(v) > 0 {
