@@ -6,6 +6,11 @@ Status](https://travis-ci.org/yuhanfang/riot.svg?branch=master)](https://travis-
 This project aims to provide a batteries-included toolkit for all publicly
 available Riot data written in Go.
 
+# THIS IS A FORK
+## I added (dirty) support for the V5 endpoints
+
+I honestly wouldn't recommend using this version of the project.
+
 # Features
   - Threadsafe, rate-limited API client. See `examples/example_apiclient`
   - Centralized rate-limiting service for multi-server configurations. See

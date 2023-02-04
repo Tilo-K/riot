@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"riot/constants/region"
+	"github.com/Tilo-K/riot/constants/region"
 )
 
 type Summoner struct {
