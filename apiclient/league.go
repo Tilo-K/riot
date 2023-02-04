@@ -3,9 +3,10 @@ package apiclient
 import (
 	"context"
 	"fmt"
-	"riot/constants/queue"
-	"riot/constants/region"
-	"riot/constants/tier"
+
+	"github.com/Tilo-K/riot/constants/queue"
+	"github.com/Tilo-K/riot/constants/region"
+	"github.com/Tilo-K/riot/constants/tier"
 )
 
 type LeagueList struct {

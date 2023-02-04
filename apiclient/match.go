@@ -9,14 +9,14 @@ import (
 	"strings"
 	"time"
 
-	"riot/constants/champion"
-	"riot/constants/event"
-	"riot/constants/lane"
-	"riot/constants/queue"
-	"riot/constants/region"
-	"riot/constants/v5region"
-	"riot/constants/season"
-	"riot/types"
+	"github.com/Tilo-K/riot/constants/champion"
+	"github.com/Tilo-K/riot/constants/event"
+	"github.com/Tilo-K/riot/constants/lane"
+	"github.com/Tilo-K/riot/constants/queue"
+	"github.com/Tilo-K/riot/constants/region"
+	"github.com/Tilo-K/riot/constants/season"
+	"github.com/Tilo-K/riot/constants/v5region"
+	"github.com/Tilo-K/riot/types"
 )
 
 type Match struct {
@@ -1473,11 +1473,20 @@ type GetMatchlistOptions struct {
 	EndIndex   *int                `json:"endIndex"`
 }
 
+type GetMatchIdsOptions struct {
+	StartTime int64  `json:"beginTime"`
+	EndTime   int64  `json:"endTime"`
+	Queue     int    `json:"queue"`
+	Type      string `json:"type"`
+	Start     int    `json:"start"`
+	Count     int    `json:"count"`
+}
+
 func timeToUnixMilliseconds(t time.Time) int64 {
 	return t.UnixNano() / int64(time.Millisecond/time.Nanosecond)
 }
 
-func (c *client) GetMatchIds(ctx context.Context, r v5region.V5Region, PUUID string, opts *GetMatchlistOptions) ([]string, error) {
+func (c *client) GetMatchIds(ctx context.Context, r v5region.V5Region, PUUID string, opts *GetMatchIdsOptions) ([]string, error) {
 	var (
 		res  []string
 		vals url.Values
@@ -1485,32 +1494,20 @@ func (c *client) GetMatchIds(ctx context.Context, r v5region.V5Region, PUUID str
 
 	if opts != nil {
 		vals = url.Values(make(map[string][]string))
-		if len(opts.Queue) != 0 {
-			for _, v := range opts.Queue {
-				vals.Add("queue", fmt.Sprintf("%d", v))
-			}
+		if opts.Queue != 0 {
+			vals.Add("queue", fmt.Sprintf("%d", opts.Queue))
 		}
-		if len(opts.Season) != 0 {
-			for _, v := range opts.Season {
-				vals.Add("season", fmt.Sprintf("%d", v))
-			}
+		if opts.StartTime != 0 {
+			vals.Add("beginTime", fmt.Sprintf("%d", opts.StartTime))
 		}
-		if len(opts.Champion) != 0 {
-			for _, v := range opts.Champion {
-				vals.Add("champion", fmt.Sprintf("%d", v))
-			}
+		if opts.EndTime != 0 {
+			vals.Add("endTime", fmt.Sprintf("%d", opts.EndTime))
 		}
-		if opts.BeginTime != nil {
-			vals.Add("beginTime", fmt.Sprintf("%d", timeToUnixMilliseconds(*opts.BeginTime)))
+		if opts.Start != 0 {
+			vals.Add("beginIndex", fmt.Sprintf("%d", opts.Start))
 		}
-		if opts.EndTime != nil {
-			vals.Add("endTime", fmt.Sprintf("%d", timeToUnixMilliseconds(*opts.EndTime)))
-		}
-		if opts.BeginIndex != nil {
-			vals.Add("beginIndex", fmt.Sprintf("%d", *opts.BeginIndex))
-		}
-		if opts.EndIndex != nil {
-			vals.Add("endIndex", fmt.Sprintf("%d", *opts.EndIndex))
+		if opts.Count != 0 {
+			vals.Add("count", fmt.Sprintf("%d", opts.Count))
 		}
 	}
 	_, err := c.dispatchAndUnmarshalV5(ctx, r, "/lol/match/v5/matches/by-puuid", fmt.Sprintf("/%s/ids", PUUID), vals, &res)

@@ -14,12 +14,12 @@ import (
 	"net/url"
 	"strings"
 
-	"riot/constants/champion"
-	"riot/constants/queue"
-	"riot/constants/region"
-	"riot/constants/v5region"
-	"riot/external"
-	"riot/ratelimit"
+	"github.com/Tilo-K/riot/constants/champion"
+	"github.com/Tilo-K/riot/constants/queue"
+	"github.com/Tilo-K/riot/constants/region"
+	"github.com/Tilo-K/riot/constants/v5region"
+	"github.com/Tilo-K/riot/external"
+	"github.com/Tilo-K/riot/ratelimit"
 )
 
 // Client accesses the Riot API. Use New() to retrieve a valid instance.
@@ -78,7 +78,7 @@ type Client interface {
 
 	// GetMatchIds returns a ist of matchIds for games played on a account with the given PUUID
 	// and filtered using given filter parameters, if any.
-	GetMatchIds(ctx context.Context, r v5region.V5Region, PUUID string, opts *GetMatchlistOptions) ([]string, error)
+	GetMatchIds(ctx context.Context, r v5region.V5Region, PUUID string, opts *GetMatchIdsOptions) ([]string, error)
 
 	// GetRecentMatchlist returns the last 20 matches played on the given account ID.
 	GetRecentMatchlist(ctx context.Context, r region.Region, accountID string) (*Matchlist, error)
