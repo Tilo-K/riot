@@ -1498,7 +1498,7 @@ func (c *client) GetMatchIds(ctx context.Context, r v5region.V5Region, PUUID str
 			vals.Add("queue", fmt.Sprintf("%d", opts.Queue))
 		}
 		if opts.StartTime != 0 {
-			vals.Add("beginTime", fmt.Sprintf("%d", opts.StartTime))
+			vals.Add("startTime", fmt.Sprintf("%d", opts.StartTime))
 		}
 		if opts.EndTime != 0 {
 			vals.Add("endTime", fmt.Sprintf("%d", opts.EndTime))
