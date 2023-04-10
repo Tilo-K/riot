@@ -15,6 +15,7 @@ import (
 	"github.com/Tilo-K/riot/constants/queue"
 	"github.com/Tilo-K/riot/constants/region"
 	"github.com/Tilo-K/riot/constants/season"
+	"github.com/Tilo-K/riot/constants/v5region"
 )
 
 var zeroTime time.Time
@@ -140,11 +141,11 @@ func (c *client) GetLeagueByID(ctx context.Context, r region.Region, leagueID st
 	return res, err
 }
 
-func (c *client) GetMatch(ctx context.Context, r region.Region, matchID int64) (*apiclient.Match, error) {
+func (c *client) GetMatch(ctx context.Context, r v5region.V5Region, matchID string) (*apiclient.Match, error) {
 	return c.Client.GetMatch(ctx, r, matchID)
 }
 
-func (c *client) GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*apiclient.MatchTimeline, error) {
+func (c *client) GetMatchTimeline(ctx context.Context, r v5region.V5Region, matchID string) (*apiclient.MatchTimeline, error) {
 	return c.Client.GetMatchTimeline(ctx, r, matchID)
 }
 

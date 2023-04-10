@@ -1638,8 +1638,8 @@ type MatchEvent struct {
 	BeforeID                int                `json:"beforeID"`
 }
 
-func (c *client) GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*MatchTimeline, error) {
+func (c *client) GetMatchTimeline(ctx context.Context, r v5region.V5Region, matchID string) (*MatchTimeline, error) {
 	var res MatchTimeline
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v4/timelines/by-match", fmt.Sprintf("/%d", matchID), nil, &res)
+	_, err := c.dispatchAndUnmarshalV5(ctx, r, "/lol/match/v5/matches/", fmt.Sprintf("/%s/timeline", matchID), nil, &res)
 	return &res, err
 }

@@ -69,7 +69,7 @@ type Client interface {
 	// GetMatch returns a match by match ID.
 	GetMatch(ctx context.Context, r v5region.V5Region, matchID string) (*Match, error)
 
-	GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*MatchTimeline, error)
+	GetMatchTimeline(ctx context.Context, r v5region.V5Region, matchID string) (*MatchTimeline, error)
 
 	// GetMatchlist returns a matchlist for games played on a given account ID
 	// and filtered using given filter parameters, if any.
