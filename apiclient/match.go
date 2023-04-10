@@ -1651,6 +1651,6 @@ type MatchEvent struct {
 
 func (c *client) GetMatchTimeline(ctx context.Context, r v5region.V5Region, matchID string) (*MatchTimeline, error) {
 	var res MatchTimeline
-	_, err := c.dispatchAndUnmarshalV5(ctx, r, "/lol/match/v5/matches/", fmt.Sprintf("%s/timeline", matchID), nil, &res)
+	_, err := c.dispatchAndUnmarshalV5(ctx, r, "/lol/match/v5/matches", fmt.Sprintf("/%s/timeline", matchID), nil, &res)
 	return &res, err
 }
