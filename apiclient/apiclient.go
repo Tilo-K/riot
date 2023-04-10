@@ -250,6 +250,7 @@ func (c *client) dispatchMethodV5(ctx context.Context, r v5region.V5Region, m st
 		separator = "/"
 	}
 	path := r.Host() + m + separator + relativePath + suffix
+	fmt.Println(path)
 	req, err := http.NewRequest("GET", path, nil)
 	if err != nil {
 		return nil, err
