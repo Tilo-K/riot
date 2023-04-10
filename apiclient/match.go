@@ -1563,8 +1563,19 @@ func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accoun
 }
 
 type MatchTimeline struct {
+	Metadata Metadata `json:"metadata"`
+	Info     Info     `json:"info"`
+}
+
+type Info struct {
 	Frames        []MatchFrame       `json:"frames",datastore:",noindex"`
 	FrameInterval types.Milliseconds `json:"frameInterval",datastore:",noindex"`
+}
+
+type Metadata struct {
+	DataVersion  string   `json:"dataVersion"`
+	MatchID      string   `json:"matchId"`
+	Participants []string `json:"participants"`
 }
 
 // ParticipantFrames stores frames corresponding to each participant. The order
@@ -1640,6 +1651,6 @@ type MatchEvent struct {
 
 func (c *client) GetMatchTimeline(ctx context.Context, r v5region.V5Region, matchID string) (*MatchTimeline, error) {
 	var res MatchTimeline
-	_, err := c.dispatchAndUnmarshalV5(ctx, r, "/lol/match/v5/matches/", fmt.Sprintf("/%s/timeline", matchID), nil, &res)
+	_, err := c.dispatchAndUnmarshalV5(ctx, r, "/lol/match/v5/matches/", fmt.Sprintf("%s/timeline", matchID), nil, &res)
 	return &res, err
 }
