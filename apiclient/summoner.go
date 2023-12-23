@@ -17,6 +17,12 @@ type Summoner struct {
 	RevisionDate  int64  `json:"revisionDate",datastore:",noindex"`  // Date summoner was last modified specified as epoch milliseconds. The following events will update this timestamp: profile icon change, playing the tutorial or advanced tutorial, finishing a game, summoner name change
 }
 
+type RiotAccount struct {
+	Puuid    string `json:"puuid"`
+	GameName string `json:"gameName"`
+	TagLine  string `json:"tagLine"`
+}
+
 func (c *client) GetByAccountID(ctx context.Context, r region.Region, accountID string) (*Summoner, error) {
 	var res Summoner
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/summoner/v4/summoners/by-account", fmt.Sprintf("/%s", accountID), nil, &res)
@@ -38,5 +44,17 @@ func (c *client) GetBySummonerPUUID(ctx context.Context, r region.Region, puuid 
 func (c *client) GetBySummonerID(ctx context.Context, r region.Region, summonerID string) (*Summoner, error) {
 	var res Summoner
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/summoner/v4/summoners", fmt.Sprintf("/%s", summonerID), nil, &res)
+	return &res, err
+}
+
+func (c *client) GetRiotAccountByNameAndTag(ctx context.Context, r region.Region, name string, tag string) (*RiotAccount, error) {
+	var res RiotAccount
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/riot/account/v1/accounts/by-riot-id", fmt.Sprintf("/%s/%s", name, tag), nil, &res)
+	return &res, err
+}
+
+func (c *client) GetRiotAccountByPuuid(ctx context.Context, r region.Region, puuid string) (*RiotAccount, error) {
+	var res RiotAccount
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/riot/account/v1/accounts/by-puuid", fmt.Sprintf("/%s", puuid), nil, &res)
 	return &res, err
 }
