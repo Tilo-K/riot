@@ -103,6 +103,10 @@ type Client interface {
 	// GetBySummonerPUUID returns a summoner by PUUID.
 	GetBySummonerPUUID(ctx context.Context, r region.Region, puuid string) (*Summoner, error)
 
+	GetRiotAccountByNameAndTag(ctx context.Context, r v5region.V5Region, name string, tag string) (*RiotAccount, error)
+
+	GetRiotAccountByPuuid(ctx context.Context, r v5region.V5Region, puuid string) (*RiotAccount, error)
+
 	// GetBySummonerID returns a sumoner by summoner ID.
 	GetBySummonerID(ctx context.Context, r region.Region, summonerID string) (*Summoner, error)
 
