@@ -109,7 +109,6 @@ type Client interface {
 
 	// GetBySummonerID returns a sumoner by summoner ID.
 	GetBySummonerID(ctx context.Context, r region.Region, summonerID string) (*Summoner, error)
-
 	// ----- Third Party Code API -----
 
 	// GetThirdPartyCodeByID returns a string set by the given summoner
