@@ -30,6 +30,8 @@ type Client interface {
 	// number of champion points descending.
 	GetAllChampionMasteries(ctx context.Context, r region.Region, summonerID string) ([]ChampionMastery, error)
 
+	GetAllChampionMasteriesByPuuid(ctx context.Context, r region.Region, puuid string) ([]ChampionMastery, error)
+
 	// GetChampionMastery returns champion mastery by summoner ID and champion.
 	GetChampionMastery(ctx context.Context, r region.Region, summonerID string, champ champion.Champion) (*ChampionMastery, error)
 
