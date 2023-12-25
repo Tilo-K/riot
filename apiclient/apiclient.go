@@ -218,6 +218,7 @@ func (c *client) dispatchMethod(ctx context.Context, r region.Region, m string, 
 		separator = "/"
 	}
 	path := r.Host() + m + separator + relativePath + suffix
+	fmt.Println(path)
 	req, err := http.NewRequest("GET", path, nil)
 	if err != nil {
 		return nil, err
