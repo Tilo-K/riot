@@ -27,7 +27,7 @@ func (c *client) GetAllChampionMasteries(ctx context.Context, r region.Region, s
 
 func (c *client) GetAllChampionMasteriesByPuuid(ctx context.Context, r region.Region, puuid string) ([]ChampionMastery, error) {
 	var res []ChampionMastery
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/champion-mastery/v4/champion-masteries/by-puuid}", fmt.Sprintf("/%s", puuid), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/champion-mastery/v4/champion-masteries/by-puuid", fmt.Sprintf("/%s", puuid), nil, &res)
 	return res, err
 }
 
