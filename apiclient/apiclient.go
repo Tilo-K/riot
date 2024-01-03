@@ -20,6 +20,7 @@ import (
 	"github.com/Tilo-K/riot/constants/v5region"
 	"github.com/Tilo-K/riot/external"
 	"github.com/Tilo-K/riot/ratelimit"
+	"golang.org/x/tools/go/analysis/passes/slog"
 )
 
 // Client accesses the Riot API. Use New() to retrieve a valid instance.
@@ -144,6 +145,9 @@ func (c *client) dispatchAndUnmarshalWithUniquifier(ctx context.Context, r regio
 		return res, err
 	}
 	if res.StatusCode != http.StatusOK {
+		if res.StatusCode == http.StatusBadRequest {
+			fmt.Errorf("Invalid request: %s\n", res.Request.URL)
+		}
 		err, ok := httpErrors[res.StatusCode]
 		if !ok {
 			err = ErrBadHTTPStatus
@@ -170,6 +174,9 @@ func (c *client) dispatchAndUnmarshalWithUniquifierV5(ctx context.Context, r v5r
 		return res, err
 	}
 	if res.StatusCode != http.StatusOK {
+		if res.StatusCode == http.StatusBadRequest {
+			fmt.Errorf("Invalid request: %s\n", res.Request.URL)
+		}
 		err, ok := httpErrors[res.StatusCode]
 		if !ok {
 			err = ErrBadHTTPStatus
