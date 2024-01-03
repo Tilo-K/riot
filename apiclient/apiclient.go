@@ -145,7 +145,7 @@ func (c *client) dispatchAndUnmarshalWithUniquifier(ctx context.Context, r regio
 	}
 	if res.StatusCode != http.StatusOK {
 		if res.StatusCode == http.StatusBadRequest {
-			fmt.Errorf("Invalid request: %s\n", res.Request.URL)
+			fmt.Println("Invalid request: ", res.Request.URL)
 		}
 		err, ok := httpErrors[res.StatusCode]
 		if !ok {
@@ -174,7 +174,7 @@ func (c *client) dispatchAndUnmarshalWithUniquifierV5(ctx context.Context, r v5r
 	}
 	if res.StatusCode != http.StatusOK {
 		if res.StatusCode == http.StatusBadRequest {
-			fmt.Errorf("Invalid request: %s\n", res.Request.URL)
+			fmt.Println("Invalid request: ", res.Request.URL)
 		}
 		err, ok := httpErrors[res.StatusCode]
 		if !ok {
