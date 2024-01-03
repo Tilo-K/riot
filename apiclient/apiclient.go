@@ -20,7 +20,6 @@ import (
 	"github.com/Tilo-K/riot/constants/v5region"
 	"github.com/Tilo-K/riot/external"
 	"github.com/Tilo-K/riot/ratelimit"
-	"golang.org/x/tools/go/analysis/passes/slog"
 )
 
 // Client accesses the Riot API. Use New() to retrieve a valid instance.
